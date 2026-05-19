@@ -1,0 +1,38 @@
+%% Mermaid Sequence Diagram: Student Account Management System
+
+sequenceDiagram
+    participant User
+    participant MainProgram
+    participant Operations
+    participant DataProgram
+
+    User->>MainProgram: Start program
+    MainProgram->>User: Display menu
+    User->>MainProgram: Select option (View, Credit, Debit, Exit)
+    alt View Balance
+        MainProgram->>Operations: Call 'TOTAL'
+        Operations->>DataProgram: Call 'READ', FINAL-BALANCE
+        DataProgram-->>Operations: Return FINAL-BALANCE
+        Operations->>MainProgram: Display balance
+        MainProgram->>User: Show balance
+    else Credit Account
+        MainProgram->>Operations: Call 'CREDIT'
+        Operations->>User: Prompt for amount
+        User->>Operations: Enter amount
+        Operations->>DataProgram: Call 'READ', FINAL-BALANCE
+        DataProgram-->>Operations: Return FINAL-BALANCE
+        Operations->>DataProgram: Call 'WRITE', FINAL-BALANCE + amount
+        Operations->>MainProgram: Display new balance
+        MainProgram->>User: Show new balance
+    else Debit Account
+        MainProgram->>Operations: Call 'DEBIT'
+        Operations->>User: Prompt for amount
+        User->>Operations: Enter amount
+        Operations->>DataProgram: Call 'READ', FINAL-BALANCE
+        DataProgram-->>Operations: Return FINAL-BALANCE
+        Operations->>DataProgram: Call 'WRITE', FINAL-BALANCE - amount
+        Operations->>MainProgram: Display new balance or error
+        MainProgram->>User: Show result
+    end
+    User->>MainProgram: Exit
+    MainProgram->>User: Goodbye message
